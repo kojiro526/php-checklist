@@ -9,5 +9,7 @@
             "email": "kojiro@ryusei-sha.com"
         }
     ],
-    "require": {}
+    "require": {
+        "pear/console_commandline": "^1.2"
+    }
 }
