@@ -1,0 +1,13 @@
+{
+    "name": "kojiro526/php-checklist",
+    "description": "Check list generator from markdown",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kojiro",
+            "email": "kojiro@ryusei-sha.com"
+        }
+    ],
+    "require": {}
+}
