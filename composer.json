@@ -10,7 +10,8 @@
 	],
 	"require" : {
 		"pear/console_commandline" : "^1.2",
-		"cebe/markdown" : "^1.1"
+		"cebe/markdown" : "^1.1",
+		"PHPOffice/PHPExcel": "^1.8"
 	},
 	"require-dev" : {
 		"phpunit/phpunit" : "*"

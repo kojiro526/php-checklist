@@ -1,39 +1,41 @@
 <?php
 namespace PhpChecklist\Libs;
 
+use PhpChecklist\Libs\Doc\Part;
+
 class Markdown
 {
+
+    /**
+     * Markdownテキストのパーサ
+     *
+     * Markdownで書かれたテスト項目書をパースする
+     *
+     * @param string $text 全てのMarkdownファイルを結合したテキスト
+     * @return PhpChecklist\Libs\Doc\Root
+     */
     public static function parse($text)
     {
-        $array = explode("\n", $text);
-        $array = array_map('trim', $array);
+        $lines = explode("\n", $text);
+        $lines = array_map('trim', $lines);
         
-        $response = [];
+        $part_text = '';
+        $root = new Root();
         
-        foreach($array as $line)
-        {
-            if(preg_match('/^# /', $line))
-            {
-                array_push($response, new Root());
-                $response[count($response) -1]->addChild(new Head1($line));
-                continue;
+        foreach ($lines as $line) {
+            if (preg_match('/^# /', $line)) {
+                if (! empty($part_text)) {
+                    $root->addChild(new Part($part_text));
+                }
+                $part_text = '';
             }
-
-            if(preg_match('/^## /', $line))
-            {
-                if(count($response) == 0) die('Missing head1.' . "\n");
-                $response[count($response)-1]->addChild(new Head2($line));
-                continue;
-            }
-
-            if(preg_match('/^### /', $line))
-            {
-                if(count($response) == 0) die('Missing head1.' . "\n");
-                $response[count($response)-1]->addChild(new Head2($line));
-                continue;
-            }
+            
+            $part_text .= $line . "\n";
         }
         
-        return $response;
+        if (! empty($part_text))
+            $root->addChild(new Part($part_text));
+        
+        return $root;
     }
 }

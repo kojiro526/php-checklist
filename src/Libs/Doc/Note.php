@@ -1,15 +1,17 @@
 <?php
-namespace PhpChecklist\Libs;
+namespace PhpChecklist\Libs\Doc;
 
-class Head3 extends Node
+use PhpChecklist\Libs\Node;
+
+class Note extends Node
 {
+
     public function __construct($text)
     {
         $this->setRawText($text);
     }
     
-    public function toString()
-    {
+    public function toString(){
         return $this->raw_text;
     }
 }

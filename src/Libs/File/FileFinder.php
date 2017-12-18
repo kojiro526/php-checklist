@@ -48,6 +48,10 @@ class FileFinder
     /**
      * ファイルパスを再帰的にスキャン
      * 
+     * 与えられたパスがディレクトリであれば再帰的にファイルを取得する。
+     * 
+     * 与えられたパスがファイルであればそのファイルのパスのみを取得する。
+     * 
      * @param string $path
      */
     private function get_paths($path = null)
@@ -70,7 +74,8 @@ class FileFinder
                 $this->get_paths($file_path);
             }
         } else {
-            $ext = array_pop(explode('.', $real_path));
+            $exploded = explode('.', $real_path);
+            $ext = array_pop($exploded);
             if (in_array($ext, $this->allow_extentions)) {
                 $this->addFiles($real_path);
             }
