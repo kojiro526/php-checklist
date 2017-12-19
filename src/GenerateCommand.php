@@ -4,7 +4,6 @@ namespace PhpChecklist;
 use PhpChecklist\Libs\Markdown;
 use PhpChecklist\Libs\File\FileFinder;
 use PhpChecklist\Libs\File\Output\ExcelBuilder;
-
 class GenerateCommand
 {
 
@@ -40,7 +39,12 @@ class GenerateCommand
         if (! ($input_path = realpath($this->options['input']))) {
             die('File or directory not found.');
         }
-        
+
+        $output_file = $this->options['output'];
+        if(!in_array(pathinfo($output_file, PATHINFO_EXTENSION), array('xlsx'))){
+            die('Invalid output file format.' . "\n");
+        }
+
         $file_finder = new FileFinder();
         $file_finder->setAllowExtensions([
             'md',
@@ -53,15 +57,10 @@ class GenerateCommand
             $markdown .= file_get_contents($file_path) . "\n";
         }
         $root = Markdown::parse($markdown);
-        foreach ($root->getParts() as $part) {
-            if ($part->hasCheckListSection()) {
-                // echo $part->toString() . "\n";
-                // var_dump($part);
-            }
-        }
         
         $excel_builder = new ExcelBuilder($root);
-        $excel_builder->setFilePath(__DIR__ . '/../tmp/output.xlsx')
+//        $excel_builder->setFilePath(__DIR__ . '/../tmp/output.xlsx')
+        $excel_builder->setFilePath($output_file)
             ->setColumnOffset(2)
             ->setRowOffset(2)
             ->addColumn('No', [
