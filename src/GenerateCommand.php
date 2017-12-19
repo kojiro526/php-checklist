@@ -59,7 +59,6 @@ class GenerateCommand
         $root = Markdown::parse($markdown);
         
         $excel_builder = new ExcelBuilder($root);
-//        $excel_builder->setFilePath(__DIR__ . '/../tmp/output.xlsx')
         $excel_builder->setFilePath($output_file)
             ->setColumnOffset(2)
             ->setRowOffset(2)

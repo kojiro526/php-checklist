@@ -2,6 +2,7 @@
 namespace PhpChecklist\Libs;
 
 use PhpChecklist\Libs\Doc\Part;
+use PhpChecklist\Libs\Doc\Root;
 
 class Markdown
 {

@@ -1,5 +1,5 @@
 <?php
-namespace PhpChecklist\Libs;
+namespace PhpChecklist\Libs\Doc;
 
 abstract class Node
 {

@@ -1,8 +1,6 @@
 <?php
 namespace PhpChecklist\Libs\Doc;
 
-use PhpChecklist\Libs\Node;
-
 class Procedure extends Node {
     
     public function __construct($text){

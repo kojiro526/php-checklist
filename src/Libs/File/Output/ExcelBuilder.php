@@ -20,7 +20,7 @@ class ExcelBuilder
 
     private $header_row = 1;
 
-    public function __construct(PhpChecklist\Libs\Root $root)
+    public function __construct(PhpChecklist\Libs\Doc\Root $root)
     {
         $this->book = new \PHPExcel();
         $this->data_source = $root;
