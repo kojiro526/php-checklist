@@ -75,10 +75,12 @@ class GenerateCommand
             'width' => 38
         ])
             ->addColumn('確認者', [
-            'width' => 8
+            'width' => 8,
+            'verticalAlign' => 'center'
         ])
             ->addColumn('確認日', [
-            'width' => 8
+            'width' => 8,
+            'verticalAlign' => 'center'
         ])
             ->addColumn('備考', [
             'width' => 17

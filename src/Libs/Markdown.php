@@ -12,7 +12,8 @@ class Markdown
      *
      * Markdownで書かれたテスト項目書をパースする
      *
-     * @param string $text 全てのMarkdownファイルを結合したテキスト
+     * @param string $text
+     *            全てのMarkdownファイルを結合したテキスト
      * @return PhpChecklist\Libs\Doc\Root
      */
     public static function parse($text)
@@ -26,7 +27,10 @@ class Markdown
         foreach ($lines as $line) {
             if (preg_match('/^# /', $line)) {
                 if (! empty($part_text)) {
-                    $root->addChild(new Part($part_text));
+                    $part = new Part($part_text);
+                    if ($part->hasCheckListSection()) {
+                        $root->addChild($part);
+                    }
                 }
                 $part_text = '';
             }

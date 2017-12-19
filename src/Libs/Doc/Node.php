@@ -41,6 +41,7 @@ abstract class Node
      */
     public function addChild(Node $node)
     {
+        $node->setSequence(count($this->children) + 1);
         array_push($this->children, $node);
     }
     
@@ -60,19 +61,6 @@ abstract class Node
      * @return string
      */
     abstract public function toString();
-    
-    /*
-    public function isTopSection(){
-        return false;
-    }
-    
-    public function isCheckSection(){
-        return false;
-    }
-    public function isCheckItem(){
-        return false;
-    }
-    */
     
     public function setSequence($number)
     {

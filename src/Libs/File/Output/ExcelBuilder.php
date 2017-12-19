@@ -3,6 +3,12 @@ namespace PhpChecklist\Libs\File\Output;
 
 use PhpChecklist;
 
+/**
+ * 出力するExcelファイルを組み立てる。
+ * 
+ * @author sasaki
+ *
+ */
 class ExcelBuilder
 {
 
@@ -26,6 +32,15 @@ class ExcelBuilder
         $this->data_source = $root;
     }
 
+    /**
+     * 列の設定を追加する
+     * 
+     * チェックリストのシートの列の定義を設定する。
+     * 
+     * @param string $text 列のタイトル
+     * @param array $options 列の設定
+     * @return \PhpChecklist\Libs\File\Output\ExcelBuilder
+     */
     public function addColumn($text, $options)
     {
         array_push($this->columns, [
@@ -71,6 +86,11 @@ class ExcelBuilder
         return $this;
     }
 
+    /**
+     * Excelファイルを生成する
+     * 
+     * @return \PhpChecklist\Libs\File\Output\ExcelBuilder
+     */
     public function build()
     {
         foreach ($this->data_source->getParts() as $i => $part) {
@@ -81,6 +101,12 @@ class ExcelBuilder
         return $this;
     }
 
+    /**
+     * チェックリストのシートをレンダリングする
+     * 
+     * @param PhpChecklist\Libs\Doc\Part $part
+     * @param number $i
+     */
     private function renderSheet(PhpChecklist\Libs\Doc\Part $part, $i)
     {
         // 1枚目のシートはBookを生成した際に既に存在するため、2枚目以降からSheetの追加処理を行う
