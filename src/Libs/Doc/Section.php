@@ -3,8 +3,9 @@ namespace PhpChecklist\Libs\Doc;
 
 class Section extends Node
 {
-    
+
     protected $heading_raw;
+
     protected $content_raw;
 
     public function __construct($text)
@@ -18,8 +19,13 @@ class Section extends Node
             $this->heading_raw = $lines[0];
             
             $content = '';
-            for($i=1; $i<count($lines); $i++){
-                $content .= $lines[$i] . "\n";
+            $is_content_start = false;
+            for ($i = 1; $i < count($lines); $i ++) {
+                if ($is_content_start == false && ! empty($lines[$i]))
+                    $is_content_start = true;
+                
+                if ($is_content_start)
+                    $content .= $lines[$i] . "\n";
             }
             $this->content_raw = $content;
         }
@@ -40,8 +46,9 @@ class Section extends Node
         }
         return null;
     }
-    
-    public function toString(){
+
+    public function toString()
+    {
         return $this->raw_text;
     }
 
@@ -55,24 +62,32 @@ class Section extends Node
     {
         return ! empty(preg_match('/^#{1,6} /', $line));
     }
-    
+
     /**
      * セクションのキャプションを返却する
-     * 
+     *
      * セクションの見出し（Heading）のテキストを返却する
-     * 
+     *
      * @return string|NULL
      */
-    public function getCaption(){
+    public function getCaption()
+    {
         return $this->parseHeading($this->heading_raw);
     }
-    
+
     /**
      * キャプションを除いたコンテンツ部分のテキストを返却する。
-     * 
+     *
      * @return mixed
      */
-    public function getRawContent(){
+    public function getRawContent()
+    {
         return $this->content_raw;
+    }
+    
+    public function splitContent()
+    {
+        if(empty($this->content_raw)) return [];
+        return explode("\n", $this->content_raw);
     }
 }

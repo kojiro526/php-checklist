@@ -5,9 +5,9 @@ use PhpChecklist;
 
 /**
  * 出力するExcelファイルを組み立てる。
- * 
- * @author sasaki
  *
+ * @author sasaki
+ *        
  */
 class ExcelBuilder
 {
@@ -34,11 +34,13 @@ class ExcelBuilder
 
     /**
      * 列の設定を追加する
-     * 
+     *
      * チェックリストのシートの列の定義を設定する。
-     * 
-     * @param string $text 列のタイトル
-     * @param array $options 列の設定
+     *
+     * @param string $text
+     *            列のタイトル
+     * @param array $options
+     *            列の設定
      * @return \PhpChecklist\Libs\File\Output\ExcelBuilder
      */
     public function addColumn($text, $options)
@@ -88,7 +90,7 @@ class ExcelBuilder
 
     /**
      * Excelファイルを生成する
-     * 
+     *
      * @return \PhpChecklist\Libs\File\Output\ExcelBuilder
      */
     public function build()
@@ -103,9 +105,9 @@ class ExcelBuilder
 
     /**
      * チェックリストのシートをレンダリングする
-     * 
-     * @param PhpChecklist\Libs\Doc\Part $part
-     * @param number $i
+     *
+     * @param PhpChecklist\Libs\Doc\Part $part            
+     * @param number $i            
      */
     private function renderSheet(PhpChecklist\Libs\Doc\Part $part, $i)
     {
@@ -132,10 +134,20 @@ class ExcelBuilder
         foreach ($part->getCheckItems() as $j => $item) {
             $sheet->setCellValueByColumnAndRow($this->getColumnPosition(0), $row, $part->getSequence() . '-' . $item->getSequence());
             $sheet->setCellValueByColumnAndRow($this->getColumnPosition(1), $row, $item->getCaption());
-            $sheet->setCellValueByColumnAndRow($this->getColumnPosition(2), $row, $item->getProcedure()
-                ->toString());
-            $sheet->setCellValueByColumnAndRow($this->getColumnPosition(3), $row, $item->getExpects()
-                ->toString());
+            if (! empty($item->getProcedure())) {
+                $sheet->setCellValueByColumnAndRow($this->getColumnPosition(2), $row, $item->getProcedure()
+                    ->toString());
+                if ($item->getProcedure()->isNeedPrefixWithQuote())
+                    $sheet->getStyleByColumnAndRow($this->getColumnPosition(2), $row)
+                        ->setQuotePrefix(true);
+            }
+            if (! empty($item->getExpects())) {
+                $sheet->setCellValueByColumnAndRow($this->getColumnPosition(3), $row, $item->getExpects()
+                    ->toString());
+                if ($item->getExpects()->isNeedPrefixWithQuote())
+                    $sheet->getStyleByColumnAndRow($this->getColumnPosition(3), $row)
+                        ->setQuotePrefix(true);
+            }
             // $sheet->getStyleByColumnAndRow(1, $row)->getAlignment()->setIndent(1);
             $row = $row + 1;
         }
@@ -174,10 +186,10 @@ class ExcelBuilder
 
     /**
      * 列ごとの設定を反映
-     * 
-     * @param \PHPExcel_Worksheet $sheet
-     * @param number $i
-     * @param array $column
+     *
+     * @param \PHPExcel_Worksheet $sheet            
+     * @param number $i            
+     * @param array $column            
      */
     private function setupColumns(\PHPExcel_Worksheet $sheet, $i, $column)
     {
@@ -191,7 +203,7 @@ class ExcelBuilder
             ->getFill()
             ->setFillType(\PHPExcel_Style_Fill::FILL_SOLID)
             ->getStartColor()
-            ->setRGB('AAAAAA');
+            ->setRGB('D9D9D9');
         
         // セルの縦揃えを設定
         if (array_key_exists('verticalAlign', $column['options']) && in_array($column['options']['verticalAlign'], [

@@ -1,7 +1,7 @@
 <?php
 namespace PhpChecklist\Libs\Doc;
 
-class CheckListItem extends Node
+class CheckListItem extends Section
 {
 
     private $subsection_procedure = '手順';
@@ -18,23 +18,27 @@ class CheckListItem extends Node
 
     public function __construct($text)
     {
-        $this->setRawText($text);
+        parent::__construct($text);
         $this->parse();
     }
-    
-    public function getProcedure(){
+
+    public function getProcedure()
+    {
         return $this->procedure;
     }
-    
-    public function getExpects(){
+
+    public function getExpects()
+    {
         return $this->expects;
     }
-    
-    public function getCaption(){
-        return $this->caption;
-    }
-    
-    public function toString(){
+
+    /*
+     * public function getCaption(){
+     * return $this->caption;
+     * }
+     */
+    public function toString()
+    {
         return $this->raw_text;
     }
 
@@ -101,11 +105,11 @@ class CheckListItem extends Node
      */
     private function parse()
     {
-        $lines = $this->split();
+        $lines = $this->splitContent();
         
-        $this->caption = $this->parseCaption($lines[0]);
-        if (! empty($this->caption))
-            array_shift($lines);
+        // $this->caption = $this->parseCaption($lines[0]);
+        // if (! empty($this->caption))
+        // array_shift($lines);
         
         $text = '';
         $note = null;
@@ -134,6 +138,8 @@ class CheckListItem extends Node
             }
         }
         
+        if (empty($note) && count($subsections) == 0)
+            return true;
         if (! empty($note) && count($subsections) == 0) {
             $this->parseWithoutSubsection($note);
             return true;
@@ -141,7 +147,7 @@ class CheckListItem extends Node
         $this->parseWithSubsection($subsections, $note);
     }
 
-    private function parseWithSubsection(array $subsections, Text $text=null)
+    private function parseWithSubsection(array $subsections, Text $text = null)
     {
         switch ($subsections[0]->getCaption()) {
             case $this->getProcedureText():
@@ -172,9 +178,29 @@ class CheckListItem extends Node
 
     private function parseWithoutSubsection(Text $text)
     {
-        foreach($text->split() as $line){
+        $procedure_text = '';
+        $expects_text = '';
+        $is_expects_start = false;
+        foreach ($text->split() as $line) {
+            if ($this->isExpectsStart($line))
+                $is_expects_start = true;
             
+            if($is_expects_start){
+                $expects_text .= $line . "\n";
+            }else{
+                $procedure_text .= $line . "\n";
+            }
         }
+        
+        if(!empty($procedure_text))
+            $this->procedure = new Procedure($procedure_text);
+        if(!empty($expects_text))
+            $this->expects = new Procedure($expects_text);
+    }
+
+    private function isExpectsStart($line)
+    {
+        return ! empty(preg_match('/^- \[ \] /', $line));
     }
 
     /**
