@@ -60,8 +60,8 @@ class GenerateCommand
         
         $excel_builder = new ExcelBuilder($root);
         $excel_builder->setFilePath($output_file)
-            ->setColumnOffset(2)
-            ->setRowOffset(2)
+            ->setColumnOffset(0)
+            ->setRowOffset(0)
             ->addColumn('No', [
             'width' => 5.5
         ])
