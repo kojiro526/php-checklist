@@ -122,7 +122,8 @@ class ExcelBuilder
         
         $sheet->getDefaultStyle()
             ->getFont()
-            ->setSize(9);
+            ->setSize(9)
+            ->setName('ＭＳ ゴシック');
         $sheet->getPageSetup()->setOrientation(\PHPExcel_Worksheet_PageSetup::ORIENTATION_LANDSCAPE);
         foreach ($this->columns as $j => $column) {
             $this->setupColumns($sheet, $j, $column);
