@@ -131,20 +131,24 @@ class ExcelBuilder
         
         // $sheet->setCellValueByColumnAndRow(0, $row, $part->getSequence());
         // $sheet->setCellValueByColumnAndRow(1, $row, $part->toString());
+
+        // 行を出力
+        // 行の高さは自動的に決まるが、そのままだと下部の余白がゼロになってしまうため、改行を加えて余白を表現するようにした。
+        // 行の高さを明示的に指定するのは、自動調整された高さを取得することができなかったため断念した。
         $row = $this->getRowPosition(2);
         foreach ($part->getCheckItems() as $j => $item) {
             $sheet->setCellValueByColumnAndRow($this->getColumnPosition(0), $row, $part->getSequence() . '-' . $item->getSequence());
-            $sheet->setCellValueByColumnAndRow($this->getColumnPosition(1), $row, $item->getCaption());
+            $sheet->setCellValueByColumnAndRow($this->getColumnPosition(1), $row, $item->getCaption() . "\n");
             if (! empty($item->getProcedure())) {
                 $sheet->setCellValueByColumnAndRow($this->getColumnPosition(2), $row, $item->getProcedure()
-                    ->toString());
+                    ->toString() . "\n");
                 if ($item->getProcedure()->isNeedPrefixWithQuote())
                     $sheet->getStyleByColumnAndRow($this->getColumnPosition(2), $row)
                         ->setQuotePrefix(true);
             }
             if (! empty($item->getExpects())) {
                 $sheet->setCellValueByColumnAndRow($this->getColumnPosition(3), $row, $item->getExpects()
-                    ->toString());
+                    ->toString() . "\n");
                 if ($item->getExpects()->isNeedPrefixWithQuote())
                     $sheet->getStyleByColumnAndRow($this->getColumnPosition(3), $row)
                         ->setQuotePrefix(true);
