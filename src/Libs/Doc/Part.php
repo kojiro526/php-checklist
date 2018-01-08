@@ -14,10 +14,9 @@ class Part extends Section
         $this->check_list = $this->parseCheckList();
         $lines = $this->split();
         if (count($lines) > 0) {
-            if (! $this->isHeading($lines[0])) {
-                throw new \Exception('Missing heading.');
+            if ($this->isHeading($lines[0])) {
+                $this->heading_raw = $lines[0];
             }
-            $this->heading_raw = $lines[0];
         }
     }
     

@@ -41,6 +41,8 @@ class Section extends Node
      */
     protected function parseHeading($line)
     {
+        if (empty($line))
+            return null;
         if (preg_match('/^#{1,6} +(.*)/', $line, $matches)) {
             return $matches[1];
         }
@@ -84,10 +86,11 @@ class Section extends Node
     {
         return $this->content_raw;
     }
-    
+
     public function splitContent()
     {
-        if(empty($this->content_raw)) return [];
+        if (empty($this->content_raw))
+            return [];
         return explode("\n", $this->content_raw);
     }
 }
