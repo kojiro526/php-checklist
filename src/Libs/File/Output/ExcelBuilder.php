@@ -2,6 +2,7 @@
 namespace PhpChecklist\Libs\File\Output;
 
 use PhpChecklist;
+use PhpChecklist\Libs\Doc\Procedure;
 
 /**
  * 出力するExcelファイルを組み立てる。
@@ -131,7 +132,7 @@ class ExcelBuilder
         
         // $sheet->setCellValueByColumnAndRow(0, $row, $part->getSequence());
         // $sheet->setCellValueByColumnAndRow(1, $row, $part->toString());
-
+        
         // 行を出力
         // 行の高さは自動的に決まるが、そのままだと下部の余白がゼロになってしまうため、改行を加えて余白を表現するようにした。
         // 行の高さを明示的に指定するのは、自動調整された高さを取得することができなかったため断念した。
@@ -140,9 +141,14 @@ class ExcelBuilder
             $sheet->setCellValueByColumnAndRow($this->getColumnPosition(0), $row, $part->getSequence() . '-' . $item->getSequence());
             $sheet->setCellValueByColumnAndRow($this->getColumnPosition(1), $row, $item->getCaption() . "\n");
             if (! empty($item->getProcedure())) {
-                $sheet->setCellValueByColumnAndRow($this->getColumnPosition(2), $row, $item->getProcedure()
-                    ->toString() . "\n");
-                if ($item->getProcedure()->isNeedPrefixWithQuote())
+                
+                $procedure_text = '';
+                if(!empty($item->getNote())) $procedure_text .= $item->getNote()->toString() . "\n\n";
+                $procedure_text .= $item->getProcedure()->toString();
+                $procedure_tmp = new Procedure($procedure_text);
+
+                $sheet->setCellValueByColumnAndRow($this->getColumnPosition(2), $row, $procedure_tmp->toString() . "\n");
+                if ($procedure_tmp->isNeedPrefixWithQuote())
                     $sheet->getStyleByColumnAndRow($this->getColumnPosition(2), $row)
                         ->setQuotePrefix(true);
             }

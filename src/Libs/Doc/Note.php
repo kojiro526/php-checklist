@@ -9,7 +9,13 @@ class Note extends Node
         $this->setRawText($text);
     }
     
+    /**
+     * テキストを返却する
+     * 
+     * {@inheritDoc}
+     * @see \PhpChecklist\Libs\Doc\Node::toString()
+     */
     public function toString(){
-        return $this->raw_text;
+        return $this->trimTail($this->raw_text);
     }
 }

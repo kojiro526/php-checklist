@@ -21,6 +21,11 @@ class CheckListItem extends Section
         parent::__construct($text);
         $this->parse();
     }
+    
+    public function getNote()
+    {
+        return $this->note;
+    }
 
     public function getProcedure()
     {
@@ -185,16 +190,16 @@ class CheckListItem extends Section
             if ($this->isExpectsStart($line))
                 $is_expects_start = true;
             
-            if($is_expects_start){
+            if ($is_expects_start) {
                 $expects_text .= $line . "\n";
-            }else{
+            } else {
                 $procedure_text .= $line . "\n";
             }
         }
         
-        if(!empty($procedure_text))
+        if (! empty($procedure_text))
             $this->procedure = new Procedure($procedure_text);
-        if(!empty($expects_text))
+        if (! empty($expects_text))
             $this->expects = new Procedure($expects_text);
     }
 
