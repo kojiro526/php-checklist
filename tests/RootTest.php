@@ -4,8 +4,8 @@ namespace PhpChecklist\Test;
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use PHPUnit\Framework\TestCase;
-use PhpChecklist\Libs\Head1;
-use PhpChecklist\Libs\Root;
+use PhpChecklist\Libs\Doc\Root;
+use PhpChecklist\Libs\Doc\Section;
 
 class RootTest extends TestCase
 {
@@ -28,7 +28,7 @@ class RootTest extends TestCase
     public function testRoot($data, $expects)
     {
         $root = new Root();
-        $root->addChild(new Head1($data));
+        $root->addChild(new Section($data));
         $this->assertEquals($expects, $root->toString());
     }
 }
