@@ -8,6 +8,10 @@ use PhpChecklist\Libs\Doc\Section;
 
 class SectionTest extends TestCase
 {
+    private $test_texts = [
+        "### aaaa\n\nbbbb\n\n#### 手順\n\ncccc\n\n#### 確認\n\n- [ ] dddd\n- [ ] eeee",
+    ];
+    
     public function dataSectionProvider()
     {
         return [
@@ -20,7 +24,6 @@ class SectionTest extends TestCase
         ];
     }
 
-
     /**
      * @dataProvider dataSectionProvider
      * @param unknown $data
@@ -30,6 +33,41 @@ class SectionTest extends TestCase
     {
         $section = new Section($data);
         $this->assertEquals($expects['caption'], $section->getCaption());
+    }
+    
+    public function dataProviderTestSplit()
+    {
+        return [
+            [
+                'data' => $this->test_texts[0],
+                'expects' => [
+                    '### aaaa',
+                    '',
+                    'bbbb',
+                    '',
+                    '#### 手順',
+                    '',
+                    'cccc',
+                    '',
+                    '#### 確認',
+                    '',
+                    '- [ ] dddd',
+                    '- [ ] eeee',
+                ]
+            ]
+        ];
+    }
+    
+    /**
+     * @dataProvider dataProviderTestSplit
+     * @param unknown $data
+     * @param unknown $expects
+     */
+    public function testSplit($data, $expects)
+    {
+        $section = new Section($data);
+        $splited = $section->split();
+        $this->assertEquals($expects, $splited);
     }
 
 }
