@@ -30,13 +30,14 @@ Markdownから試験項目のチェックリストを生成するツールです
 
 以下の３通りの方法で使うことができます。
 
-dockerを使う方法以外では、予めphpの実行環境が用意されている必要があります。
+dockerを使う方法以外では、予めphpとcomposerの実行環境が用意されている必要があります。
 
 ### このリポジトリをcloneして使う
 
 ```
 $ git clone https://github.com/kojiro526/php-checklist.git
 $ cd php-checklist
+$ composer install
 $ php -q ./bin/checklist-php.php --help
 ```
 
