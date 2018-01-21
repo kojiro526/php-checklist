@@ -1,5 +1,7 @@
 # 試験項目チェックリスト生成ツール
 
+[![CircleCI](https://circleci.com/gh/kojiro526/php-checklist.svg?style=svg)](https://circleci.com/gh/kojiro526/php-checklist)
+
 ## 概要
 
 Markdownから試験項目のチェックリストを生成するツールです。
