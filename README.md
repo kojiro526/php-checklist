@@ -37,7 +37,7 @@ dockerを使う方法以外では、予めphpとcomposerの実行環境が用意
 ```
 $ git clone https://github.com/kojiro526/php-checklist.git
 $ cd php-checklist
-$ composer install
+$ composer install --no-dev
 $ php -q ./bin/checklist-php.php --help
 ```
 
