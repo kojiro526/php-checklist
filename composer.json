@@ -29,7 +29,7 @@
 		}
 	},
 	"scripts" : {
-		"test" : "phpunit --colors=always"
+		"test" : "./vendor/bin/phpunit --colors=always ./tests"
 	},
 	"bin" : [
 		"bin/checklist-php"

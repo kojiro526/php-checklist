@@ -1,5 +1,7 @@
 # 試験項目チェックリスト生成ツール
 
+[![CircleCI](https://circleci.com/gh/kojiro526/php-checklist.svg?style=svg)](https://circleci.com/gh/kojiro526/php-checklist)
+
 ## 概要
 
 Markdownから試験項目のチェックリストを生成するツールです。
@@ -37,7 +39,7 @@ dockerを使う方法以外では、予めphpとcomposerの実行環境が用意
 ```
 $ git clone https://github.com/kojiro526/php-checklist.git
 $ cd php-checklist
-$ composer install
+$ composer install --no-dev
 $ php -q ./bin/checklist-php.php --help
 ```
 
