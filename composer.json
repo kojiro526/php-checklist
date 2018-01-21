@@ -12,7 +12,8 @@
 		"php" : ">=5.6.0",
 		"pear/console_commandline" : "^1.2",
 		"cebe/markdown" : "^1.1",
-		"PHPOffice/PHPExcel": "^1.8"
+		"PHPOffice/PHPExcel": "^1.8",
+		"symfony/yaml": "^3.4"
 	},
 	"require-dev" : {
 		"phpunit/phpunit" : "*"

@@ -3,6 +3,7 @@ namespace PhpChecklist\Libs\Doc;
 
 class Root extends Node
 {
+    private $metadata = null;
 
     private $check_list_section = null;
 
@@ -23,5 +24,15 @@ class Root extends Node
     public function getParts()
     {
         return $this->getChildren();
+    }
+    
+    public function setMetadata($metadata)
+    {
+        $this->metadata = $metadata;
+    }
+
+    public function getMetadata()
+    {
+        return $this->metadata;
     }
 }
