@@ -3,6 +3,11 @@ namespace PhpChecklist\Libs\Doc;
 
 class Root extends Node
 {
+    /**
+     * メタデータ
+     * 
+     * @var Metadata
+     */
     private $metadata = null;
 
     private $check_list_section = null;
@@ -26,7 +31,7 @@ class Root extends Node
         return $this->getChildren();
     }
     
-    public function setMetadata($metadata)
+    public function setMetadata(Metadata $metadata)
     {
         $this->metadata = $metadata;
     }
@@ -36,7 +41,7 @@ class Root extends Node
      * 
      * yamlメタデータブロック等によるメタデータの設定を取得する。
      * 
-     * @return unknown
+     * @return Metadata
      */
     public function getMetadata()
     {
