@@ -17,3 +17,5 @@ ENV PATH $PATH:/root/.composer/vendor/bin
 # Install php-checklist
 RUN composer.phar global require kojiro526/php-checklist
 
+WORKDIR /work
+
