@@ -3,6 +3,7 @@ namespace PhpChecklist\Libs\File\Output;
 
 use PhpChecklist;
 use PhpChecklist\Libs\Doc\Procedure;
+use PhpChecklist\Libs\Doc\Root;
 
 /**
  * 出力するExcelファイルを組み立てる。
@@ -31,6 +32,11 @@ class ExcelBuilder
     {
         $this->book = new \PHPExcel();
         $this->data_source = $root;
+        
+        // 以降のシート生成を簡潔にするために初期状態で存在するシートを全て削除する（通常は初期状態で1シート存在する）
+        for ($i = 0; $i < $this->book->getSheetCount(); $i ++) {
+            $this->book->removeSheetByIndex($i);
+        }
     }
 
     /**
@@ -112,14 +118,8 @@ class ExcelBuilder
      */
     private function renderSheet(PhpChecklist\Libs\Doc\Part $part, $i)
     {
-        // 1枚目のシートはBookを生成した際に既に存在するため、2枚目以降からSheetの追加処理を行う
-        if ($i == 0) {
-            $sheet = $this->book->getActiveSheet();
-            $sheet->setTitle($part->getCaption());
-        } else {
-            $this->book->createSheet()->setTitle($part->getCaption());
-            $sheet = $this->book->setActiveSheetIndexByName($part->getCaption());
-        }
+        $this->book->createSheet()->setTitle($part->getCaption());
+        $sheet = $this->book->setActiveSheetIndexByName($part->getCaption());
         
         $sheet->getDefaultStyle()
             ->getFont()
@@ -143,10 +143,11 @@ class ExcelBuilder
             if (! empty($item->getProcedure())) {
                 
                 $procedure_text = '';
-                if(!empty($item->getNote())) $procedure_text .= $item->getNote()->toString() . "\n\n";
+                if (! empty($item->getNote()))
+                    $procedure_text .= $item->getNote()->toString() . "\n\n";
                 $procedure_text .= $item->getProcedure()->toString();
                 $procedure_tmp = new Procedure($procedure_text);
-
+                
                 $sheet->setCellValueByColumnAndRow($this->getColumnPosition(2), $row, $procedure_tmp->toString() . "\n");
                 if ($procedure_tmp->isNeedPrefixWithQuote())
                     $sheet->getStyleByColumnAndRow($this->getColumnPosition(2), $row)
