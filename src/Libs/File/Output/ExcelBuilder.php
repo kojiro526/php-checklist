@@ -96,6 +96,10 @@ class ExcelBuilder
      */
     public function build()
     {
+        if ($this->data_source->hasMetadata()) {
+            $this->renderCoverSheet($this->data_source);
+        }
+        
         foreach ($this->data_source->getParts() as $i => $part) {
             if (! $part->hasCheckListSection())
                 continue;
@@ -264,5 +268,42 @@ class ExcelBuilder
             case 'bottom':
                 return \PHPExcel_Style_Alignment::VERTICAL_BOTTOM;
         }
+    }
+
+    private function renderCoverSheet(Root $root)
+    {
+        $this->book->createSheet()->setTitle('表紙');
+        $sheet = $this->book->setActiveSheetIndexByName('表紙');
+        $metadata = $root->getMetadata();
+        $sheet->setCellValueByColumnAndRow(0, 1, $metadata->getTitle());
+        $sheet->setCellValueByColumnAndRow(0, 2, $metadata->getSubtitle());
+        $sheet->setCellValueByColumnAndRow(0, 3, $metadata->getAuthor());
+        $sheet->setCellValueByColumnAndRow(0, 4, $metadata->getDate());
+        
+        $sheet->getColumnDimensionByColumn(0)->setWidth(140);
+
+        $sheet->getStyleByColumnAndRow(0, 1)
+            ->getFont()
+            ->setSize(48);
+
+        $sheet->getStyleByColumnAndRow(0, 2)
+            ->getFont()
+            ->setSize(18);
+        $sheet->getRowDimension(2)
+            ->setRowHeight(47);
+
+        $sheet->getStyleByColumnAndRow(0, 3)
+            ->getAlignment()
+            ->setHorizontal('right');
+        $sheet->getStyleByColumnAndRow(0, 3)
+            ->getFont()
+            ->setSize(14);
+
+        $sheet->getStyleByColumnAndRow(0, 4)
+            ->getAlignment()
+            ->setHorizontal('right');
+        $sheet->getStyleByColumnAndRow(0, 4)
+            ->getFont()
+            ->setSize(14);
     }
 }
