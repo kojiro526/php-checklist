@@ -6,8 +6,9 @@ jobs:
     working_directory: ~/php-checklist
     steps:
       - checkout
-      - run: sudo apt install -y zlib1g-dev
+      - run: sudo apt update && sudo apt install -y libfreetype6-dev libjpeg62-turbo-dev libpng12-dev zlib1g-dev
       - run: sudo docker-php-ext-install zip
+      - run: sudo docker-php-ext-install gd
       - run: sudo composer self-update
       - run: composer install --dev
       - run: composer test
