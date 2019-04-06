@@ -5,7 +5,10 @@ LABEL  maintainer "kojiro <kojiro@ryusei-sha.com>"
 # Install extensions
 RUN apk update && \
     apk add zlib-dev && \
-    docker-php-ext-install zip
+    docker-php-ext-install zip && \
+    apk add --no-cache libpng libpng-dev && \
+    docker-php-ext-install gd && \
+    apk del libpng-dev
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin \
