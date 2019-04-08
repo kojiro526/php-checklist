@@ -171,13 +171,17 @@ class ExcelBuilder
                         ->setQuotePrefix(true);
             }
             
-            $color = $this->row_color->getColor($item->getHeader()->getTags()->toArray());
-            $sheet->getStyleByColumnAndRow($this->getColumnPosition(1), $row, $this->getColumnPosition(7), $row)
-                ->getFill()
-                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                ->getStartColor()
-                ->setRGB($color);
-
+            $color = $this->row_color->getColor($item->getHeader()
+                ->getTags()
+                ->toArray());
+            if (! empty($color)) {
+                $sheet->getStyleByColumnAndRow($this->getColumnPosition(1), $row, $this->getColumnPosition(7), $row)
+                    ->getFill()
+                    ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()
+                    ->setRGB($color);
+            }
+            
             // $sheet->getStyleByColumnAndRow(1, $row)->getAlignment()->setIndent(1);
             $row = $row + 1;
         }
@@ -199,7 +203,6 @@ class ExcelBuilder
             ->getBorders()
             ->getAllBorders()
             ->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
-
     }
 
     public function save()
