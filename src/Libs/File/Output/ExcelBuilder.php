@@ -202,11 +202,13 @@ class ExcelBuilder
             $color = $this->row_color->getColor($item->getHeader()
                 ->getTags()
                 ->toArray());
-            $sheet->getStyleByColumnAndRow($this->getColumnPosition(1), $row, $this->getColumnPosition(7), $row)
-                ->getFill()
-                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
-                ->getStartColor()
-                ->setRGB($color);
+            if (! empty($color)) {
+                $sheet->getStyleByColumnAndRow($this->getColumnPosition(1), $row, $this->getColumnPosition(7), $row)
+                    ->getFill()
+                    ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                    ->getStartColor()
+                    ->setRGB($color);
+            }
             
             // $sheet->getStyleByColumnAndRow(1, $row)->getAlignment()->setIndent(1);
             $row = $row + 1;
