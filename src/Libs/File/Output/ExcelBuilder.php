@@ -30,6 +30,8 @@ class ExcelBuilder
 
     private $row_color = null;
 
+    private $row_label = null;
+
     private $header_row = 1;
 
     public function __construct(PhpChecklist\Libs\Doc\Root $root)
@@ -99,9 +101,27 @@ class ExcelBuilder
         return $this;
     }
 
+    /**
+     * `--color`オプションを設定する
+     *
+     * @param \PhpChecklist\Libs\Option\RowColor $row_color            
+     * @return \PhpChecklist\Libs\File\Output\ExcelBuilder
+     */
     public function setRowColor($row_color)
     {
         $this->row_color = $row_color;
+        return $this;
+    }
+
+    /**
+     * `--label`オプションを設定する
+     *
+     * @param \PhpChecklist\Libs\Option\RowLabel $row_label            
+     * @return \PhpChecklist\Libs\File\Output\ExcelBuilder
+     */
+    public function setRowLabel($row_label)
+    {
+        $this->row_label = $row_label;
         return $this;
     }
 
@@ -149,7 +169,15 @@ class ExcelBuilder
         $row = $this->getRowPosition(2);
         foreach ($part->getCheckItems() as $j => $item) {
             $sheet->setCellValueByColumnAndRow($this->getColumnPosition(1), $row, $part->getSequence() . '-' . $item->getSequence());
-            $sheet->setCellValueByColumnAndRow($this->getColumnPosition(2), $row, $item->getCaption() . "\n");
+            $caption = $item->getCaption();
+            if (! is_null($this->row_label) && ! $this->row_label->isEmpty()) {
+                $row_labels = $this->row_label->getLabels($item->getHeader()->getTags()->toArray());
+                if (count($row_labels) > 0)
+                {
+                    $caption = $caption . ' ' . sprintf("[%s]",join(', ', $row_labels));
+                }
+            }
+            $sheet->setCellValueByColumnAndRow($this->getColumnPosition(2), $row, $caption . "\n");
             if (! empty($item->getProcedure())) {
                 
                 $procedure_text = '';
