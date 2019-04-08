@@ -20,6 +20,12 @@ class SectionTest extends TestCase
                 'expects' => [
                     'caption' => "aaaa"
                 ]
+            ],
+            [
+                'data' => "# aaaa {.class}\n\nbbbb",
+                'expects' => [
+                    'caption' => "aaaa"
+                ]
             ]
         ];
     }

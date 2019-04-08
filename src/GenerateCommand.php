@@ -4,6 +4,7 @@ namespace PhpChecklist;
 use PhpChecklist\Libs\Markdown;
 use PhpChecklist\Libs\File\FileFinder;
 use PhpChecklist\Libs\File\Output\ExcelBuilder;
+use PhpChecklist\Libs\Option\RowColor;
 class GenerateCommand
 {
 
@@ -25,6 +26,12 @@ class GenerateCommand
             'description' => 'Indicate output file',
             'action' => 'StoreString'
         ]);
+        $parser->addOption('color', [
+            'short_name' => '-c',
+            'long_name' => '--color',
+            'description' => 'Indicate row color. ex) default=AAAAAA,.required=FFFFFF',
+            'action' => 'StoreString'
+        ]);
         $parser->addOption('split', [
             'short_name' => '-s',
             'long_name' => '--split',
@@ -44,6 +51,8 @@ class GenerateCommand
         if(!in_array(pathinfo($output_file, PATHINFO_EXTENSION), array('xlsx'))){
             die('Invalid output file format.' . "\n");
         }
+        
+        $row_color = new RowColor($this->options['color']);
 
         $file_finder = new FileFinder();
         $file_finder->setAllowExtensions([
@@ -62,6 +71,7 @@ class GenerateCommand
         $excel_builder->setFilePath($output_file)
             ->setColumnOffset(0)
             ->setRowOffset(0)
+            ->setRowColor($row_color)
             ->addColumn('No', [
             'width' => 5.5
         ])
