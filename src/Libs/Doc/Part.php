@@ -16,6 +16,7 @@ class Part extends Section
         if (count($lines) > 0) {
             if ($this->isHeading($lines[0])) {
                 $this->heading_raw = $lines[0];
+                $this->header = new Header($lines[0]);
             }
         }
     }

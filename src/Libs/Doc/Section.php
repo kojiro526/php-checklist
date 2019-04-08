@@ -6,6 +6,8 @@ class Section extends Node
 
     protected $heading_raw;
 
+    protected $header;
+
     protected $content_raw;
 
     public function __construct($text)
@@ -17,6 +19,7 @@ class Section extends Node
                 throw new \Exception('Missing heading.');
             }
             $this->heading_raw = $lines[0];
+            $this->header = new Header($lines[0]);
             
             $content = '';
             $is_content_start = false;
@@ -74,7 +77,17 @@ class Section extends Node
      */
     public function getCaption()
     {
-        return $this->parseHeading($this->heading_raw);
+        return $this->getHeader()->getCaption();
+    }
+
+    /**
+     * セクションのヘッダを返却する
+     *
+     * @return PhpChecklist\Libs\Doc\Header
+     */
+    public function getHeader()
+    {
+        return $this->header;
     }
 
     /**
