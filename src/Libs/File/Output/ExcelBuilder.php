@@ -4,6 +4,8 @@ namespace PhpChecklist\Libs\File\Output;
 use PhpChecklist;
 use PhpChecklist\Libs\Doc\Procedure;
 use PhpChecklist\Libs\Doc\Root;
+use PhpOffice\PhpSpreadsheet\Cell;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 /**
  * 出力するExcelファイルを組み立てる。
@@ -25,6 +27,8 @@ class ExcelBuilder
     private $column_offset = 0;
 
     private $row_offset = 0;
+
+    private $row_color = null;
 
     private $header_row = 1;
 
@@ -95,6 +99,12 @@ class ExcelBuilder
         return $this;
     }
 
+    public function setRowColor($row_color)
+    {
+        $this->row_color = $row_color;
+        return $this;
+    }
+
     /**
      * Excelファイルを生成する
      *
@@ -127,7 +137,7 @@ class ExcelBuilder
             ->setName('ＭＳ ゴシック');
         $sheet->getPageSetup()->setOrientation(\PhpOffice\PhpSpreadsheet\Worksheet\PageSetup::ORIENTATION_LANDSCAPE);
         foreach ($this->columns as $j => $column) {
-            $this->setupColumns($sheet, $j+1, $column);
+            $this->setupColumns($sheet, $j + 1, $column);
         }
         
         // $sheet->setCellValueByColumnAndRow(0, $row, $part->getSequence());
@@ -160,6 +170,14 @@ class ExcelBuilder
                     $sheet->getStyleByColumnAndRow($this->getColumnPosition(4), $row)
                         ->setQuotePrefix(true);
             }
+            
+            $color = $this->row_color->getColor($item->getHeader()->getTags()->toArray());
+            $sheet->getStyleByColumnAndRow($this->getColumnPosition(1), $row, $this->getColumnPosition(7), $row)
+                ->getFill()
+                ->setFillType(\PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID)
+                ->getStartColor()
+                ->setRGB($color);
+
             // $sheet->getStyleByColumnAndRow(1, $row)->getAlignment()->setIndent(1);
             $row = $row + 1;
         }
@@ -181,6 +199,7 @@ class ExcelBuilder
             ->getBorders()
             ->getAllBorders()
             ->setBorderStyle(\PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN);
+
     }
 
     public function save()
@@ -199,7 +218,8 @@ class ExcelBuilder
     /**
      * 列ごとの設定を反映
      *
-     * @param \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet            
+     * @param
+     *            \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet
      * @param number $i            
      * @param array $column            
      */
