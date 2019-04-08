@@ -174,7 +174,7 @@ class ExcelBuilder
                 $row_labels = $this->row_label->getLabels($item->getHeader()->getTags()->toArray());
                 if (count($row_labels) > 0)
                 {
-                    $caption = $caption . sprintf("[%s]",join(', ', $row_labels));
+                    $caption = $caption . ' ' . sprintf("[%s]",join(', ', $row_labels));
                 }
             }
             $sheet->setCellValueByColumnAndRow($this->getColumnPosition(2), $row, $caption . "\n");
