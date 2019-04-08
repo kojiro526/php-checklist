@@ -5,6 +5,7 @@ use PhpChecklist\Libs\Markdown;
 use PhpChecklist\Libs\File\FileFinder;
 use PhpChecklist\Libs\File\Output\ExcelBuilder;
 use PhpChecklist\Libs\Option\RowColor;
+use PhpChecklist\Libs\Option\RowLabel;
 class GenerateCommand
 {
 
@@ -32,6 +33,12 @@ class GenerateCommand
             'description' => 'Indicate row color. ex) default=AAAAAA,.required=FFFFFF',
             'action' => 'StoreString'
         ]);
+        $parser->addOption('label', [
+            'short_name' => '-l',
+            'long_name' => '--label',
+            'description' => 'Indicate row label. ex) .required=Required',
+            'action' => 'StoreString'
+        ]);
         $parser->addOption('split', [
             'short_name' => '-s',
             'long_name' => '--split',
@@ -53,6 +60,7 @@ class GenerateCommand
         }
         
         $row_color = new RowColor($this->options['color']);
+        $row_label = new RowLabel($this->options['label']);
 
         $file_finder = new FileFinder();
         $file_finder->setAllowExtensions([
@@ -72,6 +80,7 @@ class GenerateCommand
             ->setColumnOffset(0)
             ->setRowOffset(0)
             ->setRowColor($row_color)
+            ->setRowLabel($row_label)
             ->addColumn('No', [
             'width' => 5.5
         ])
